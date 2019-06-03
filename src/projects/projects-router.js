@@ -34,3 +34,5 @@ projectsRouter
       })
       .catch(next);
   });
+
+module.exports = projectsRouter;
