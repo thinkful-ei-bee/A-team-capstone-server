@@ -38,6 +38,7 @@ usersRouter
               username,
               password: hashedPassword,
               image,
+              email,
               user_description
             };
 
