@@ -28,13 +28,13 @@ authRouter
             error: 'Incorrect username or password'
           });
         }
-        return AuthService.comparePasswords(loginUser.password, dbUser.hashed_password)
+    
+        return AuthService.comparePasswords(loginUser.password, dbUser.password)
           .then(compareMatch => {
             if (!compareMatch)
               return res.status(400).json({
                 error: 'Incorrect username or password',
               });
-
             const sub = dbUser.username;
             const payload = { user_id: dbUser.id };
 
