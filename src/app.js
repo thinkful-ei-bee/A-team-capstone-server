@@ -7,12 +7,15 @@ const cors = require('cors');
 const { NODE_ENV } = require('./config');
 
 const app = express();
-
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
+const authRouter = require('./auth/auth-router');
+
 
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
+
+app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
