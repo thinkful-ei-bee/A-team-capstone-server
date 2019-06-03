@@ -9,7 +9,7 @@ const requireAuth = require('../middleware/jwt-auth').requireAuth;
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
-    const { password, username, email, user_description, image } = req.body;
+    const { password, username, image, email, user_description } = req.body;
     
     const passwordError = UsersService.validatePassword(password);
 
@@ -21,6 +21,14 @@ usersRouter
       return res.status(400).json({error: 'Missing \'username\' in request body'});
     }
 
+    if (!email) {
+      return res.status(400).json({error: 'Missing \'email\' in request body'});
+    }
+
+    if (!user_description) {
+      return res.status(400).json({error: 'Missing \'user_description\' in request body'});
+    };
+
     UsersService.hasUserWithUserName(req.app.get('db'), username)
       .then(hasUserWithUserName => {
         if (hasUserWithUserName) {
@@ -31,32 +39,21 @@ usersRouter
           .then(hashedPassword => {
             const newUser = {
               username,
-              hashed_password: hashedPassword,
+              password: hashedPassword,
+              image,
+              user_description
             };
 
-  
             return UsersService.addUser(req.app.get('db'), newUser)
               .then((user) => {
-                        return res.status(201).json({
-                          username: username,
-                          homepage: page.id
-                        });
-                      });
-                  });      
-              });    
-          })
+                return res.status(201).json({
+                  username: username,
+                  id: user.id
+                });
+              });
+          });      
+      })
       .catch(next);
   });
-
-  // if client sends a "GET" request to /api/users with a JWT token they will get back their username and home page id
-  .get('/', requireAuth, (req, res, next) => {
-    const authToken = req.get('Authorization');
-    const bearerToken = authToken.slice(7, authToken.length);
-    
-    return AuthService.whoamI(req.app.get('db'), bearerToken)
-      .then(user => res.status(200).json(user))
-      .catch(next);
-  });
-
 
 module.exports = usersRouter;
