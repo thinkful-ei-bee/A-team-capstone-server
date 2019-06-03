@@ -4,5 +4,5 @@ CREATE TABLE "users" (
   "password" TEXT NOT NULL,
   "email" TEXT NOT NULL UNIQUE,
   "user_description" TEXT NOT NULL,
-  "image" IMAGE,
+  "image" TEXT
 );
