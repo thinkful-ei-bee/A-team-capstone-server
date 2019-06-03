@@ -4,14 +4,14 @@ const ProjectsService = {
   addProject(db, newProject) {
     return db
       .insert(newProject)
-      .into('Projects')
+      .into('projects')
       .returning('*')
       .then(([project]) => project);
   },
   getProjects(db, owner_id) {
     return db
       .select('*')
-      .from('Projects')
+      .from('projects')
       .where ( {owner_id} );
   }
 };
