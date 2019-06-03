@@ -4,7 +4,7 @@ const BidsService = {
   addBid(db, newBid) {
     return db
       .insert(newBid)
-      .into('projects')
+      .into('bids')
       .returning('*')
       .then(([bid]) => bid);
   },
