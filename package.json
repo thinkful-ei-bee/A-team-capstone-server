@@ -1,5 +1,5 @@
 {
-  "name": "express-boilerplate",
+  "name": "a-team-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
   }
