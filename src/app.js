@@ -10,6 +10,7 @@ const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
+const projectsRouter = require('./projects-router.js');
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -17,6 +18,7 @@ app.use(cors());
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/projects', projectsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
