@@ -25,7 +25,10 @@ projectsRouter
       });
     }
 
-    return ProjectsService.addProject(req.app.get('db'), newProject).catch(next); 
+    return ProjectsService.addProject(req.app.get('db'), newProject)
+      .then(project => {return res.status(200).json({
+        id: project.id });})
+      .catch(next); 
   })
   .get((req, res, next) => {
     ProjectsService.getProjects(req.app.get('db'), req.user.id)
