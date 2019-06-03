@@ -1,11 +1,8 @@
 'use strict';
 const express = require('express');
 const UsersService = require('./users-service');
-const AuthService = require('../auth/auth-service');
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
-
-const requireAuth = require('../middleware/jwt-auth').requireAuth;
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
@@ -27,7 +24,7 @@ usersRouter
 
     if (!user_description) {
       return res.status(400).json({error: 'Missing \'user_description\' in request body'});
-    };
+    }
 
     UsersService.hasUserWithUserName(req.app.get('db'), username)
       .then(hasUserWithUserName => {
