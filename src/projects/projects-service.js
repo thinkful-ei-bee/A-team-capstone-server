@@ -8,11 +8,16 @@ const ProjectsService = {
       .returning('*')
       .then(([project]) => project);
   },
-  getProjects(db, owner_id) {
+  getProjectsFromId(db, owner_id) {
     return db
       .select('*')
       .from('projects')
       .where ( {owner_id} );
+  },
+  getAllProjects(db) {
+    return db
+      .select('*')
+      .from('projects');
   }
 };
 
