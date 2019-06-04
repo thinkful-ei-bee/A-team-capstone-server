@@ -147,7 +147,7 @@ describe('Users Endpoints', function() {
         return supertest(app)
           .post('/api/users')
           .send(attempt)
-          .expect(400, {error: 'Email alrady taken'}); 
+          .expect(400, {error: 'Email already taken'}); 
       });
     });
   });

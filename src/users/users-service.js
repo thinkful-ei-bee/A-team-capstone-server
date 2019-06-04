@@ -36,6 +36,13 @@ const UsersService = {
       .then(user => !!user);
   },
 
+  hasUserWithUserEmail(db, email) {
+    return db('users')
+      .where({ email })
+      .first()
+      .then(user => !!user);
+  },
+
   hashPassword(password) {
     return bcrypt.hash(password, 12);
   },
