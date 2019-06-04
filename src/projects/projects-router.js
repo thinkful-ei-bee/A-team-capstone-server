@@ -40,7 +40,8 @@ projectsRouter
 projectsRouter
   .route('/:id')
   .get((req, res, next) => {
-    ProjectsService.getProjectsFromId(req.app.get('db'), req.id)
+    console.log(req.id);
+    ProjectsService.getProjectsFromId(req.app.get('db'), req.params.id)
       .then(list => {
         return res.status(200).json(list);
       })
