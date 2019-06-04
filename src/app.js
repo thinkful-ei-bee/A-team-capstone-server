@@ -20,10 +20,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
-
 // eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(error, req, res, next) {
   let response;
