@@ -136,6 +136,19 @@ describe('Users Endpoints', function() {
           .expect(400, {error: 'Username already taken'});
       });
       
+      it('responds with 400 "Email already taken" when email is already taken', () => {
+        const attempt = {
+          username: 'newuserNotTaken',
+          password: 'aadsi8d!!%%s78dSd',
+          email: alreadyTaken.email,
+          user_description: 'nondescript description'
+        };
+
+        return supertest(app)
+          .post('/api/users')
+          .send(attempt)
+          .expect(400, {error: 'Email alrady taken'}); 
+      });
     });
   });
 });
