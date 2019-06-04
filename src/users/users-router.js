@@ -32,25 +32,32 @@ usersRouter
         if (hasUserWithUserName) {
           return res.status(400).json({error: 'Username already taken'});
         }
+      
+        UsersService.hasUserWithUserEmail(req.app.get('db'), email)
+          .then(hasUserWithUserEmail => {
+            if (hasUserWithUserEmail) {
+              return res.status(400).json({error: 'Email already taken'});
+            }
 
-        return UsersService.hashPassword(password)
-          .then(hashedPassword => {
-            const newUser = {
-              username,
-              password: hashedPassword,
-              image,
-              email,
-              user_description
-            };
-
-            return UsersService.addUser(req.app.get('db'), newUser)
-              .then((user) => {
-                return res.status(201).json({
-                  username: username,
-                  id: user.id
-                });
-              });
-          });      
+            return UsersService.hashPassword(password)
+              .then(hashedPassword => {
+                const newUser = {
+                  username,
+                  password: hashedPassword,
+                  image,
+                  email,
+                  user_description
+                };
+  
+                return UsersService.addUser(req.app.get('db'), newUser)
+                  .then((user) => {
+                    return res.status(201).json({
+                      username: username,
+                      id: user.id
+                    });
+                  });
+              });   
+          });
       })
       .catch(next);
   });
