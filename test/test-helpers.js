@@ -39,7 +39,7 @@ function makeProjectsArray(users) {
       project_name: 'New Project!',
       project_description: 'A second project for the first user',
       created_at: '2019-05-03T16:29:35.615Z',
-      modified_at: '2019-05-03T16:29:35.615Z'
+      updated_at: '2019-05-03T16:29:35.615Z'
     },
     {
       id: 3,
@@ -47,7 +47,7 @@ function makeProjectsArray(users) {
       project_name: 'Better project',
       project_description: 'project for second user',
       created_at: '2019-05-04T17:28:37.615Z',
-      modified_at: '2019-05-04T17:28:37.615Z'
+      updated_at: '2019-05-04T17:28:37.615Z'
     }
   ];
 }
@@ -66,9 +66,7 @@ function seedUsers(db, users, projects) {
     username: user.username,
     password: bcrypt.hashSync(user.password, 1),
     user_description: user.user_description,
-    email: user.email,
-    created_at: user.created_at,
-    modified_at: user.modified_at
+    email: user.email
   }));
 
   return db.into('users').insert(preppedUsers)
@@ -89,7 +87,6 @@ function seedUsers(db, users, projects) {
     });
 }
 
-
 function makeAuthHeader(user, secret = process.env.JWT_SECRET){
   const token = jwt.sign({user_id: user.id }, secret, {
     subject: user.username,
@@ -100,7 +97,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET){
 
 function cleanTables(db) {
   return db.raw(
-    'TRUNCATE users, projects, usersProjectCollaboration, bids RESTART IDENTITY CASCADE;'
+    'TRUNCATE users, projects, bids RESTART IDENTITY CASCADE;'
   );
 }
 
