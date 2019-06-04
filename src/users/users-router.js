@@ -3,6 +3,7 @@ const express = require('express');
 const UsersService = require('./users-service');
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
+const {requireAuth} = require('../middleware/jwt-auth');
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
@@ -50,6 +51,16 @@ usersRouter
                 });
               });
           });      
+      })
+      .catch(next);
+  });
+
+// Get /users/:id route to get profile information
+usersRouter
+  .get('/:user_id',requireAuth,(req,res,next)=>{
+    UsersService.getProfile(req.app.get('db'),req.params.user_id)
+      .then(profile=>{
+        return res.json(profile);
       })
       .catch(next);
   });
