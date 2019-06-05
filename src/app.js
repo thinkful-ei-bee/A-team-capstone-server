@@ -11,6 +11,7 @@ const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
 const projectsRouter = require('./projects/projects-router.js');
+const profileRouter = require('./profile/profile-router.js');
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -19,6 +20,7 @@ app.use(cors());
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter);
+app.use('/api/profile', profileRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(error, req, res, next) {
