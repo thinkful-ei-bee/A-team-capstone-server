@@ -7,8 +7,8 @@ const {requireAuth} = require('../middleware/jwt-auth');
 
 // get users profile
 profileRouter
-  .get('/',requireAuth, jsonBodyParser, (req,res,next)=>{
-    console.log(req.user);
+  .route('/')
+  .get(requireAuth, jsonBodyParser, (req,res,next)=>{
     const id = req.user.id;
     ProfileService.getProfile(req.app.get('db'),id)
       .then(profile=>{
@@ -17,4 +17,4 @@ profileRouter
       .catch(next);
   });
 
-  module.exports = profileRouter;
+module.exports = profileRouter;
