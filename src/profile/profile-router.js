@@ -16,3 +16,5 @@ profileRouter
       })
       .catch(next);
   });
+
+  module.exports = profileRouter;
