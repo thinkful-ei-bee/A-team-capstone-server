@@ -54,12 +54,5 @@ const UsersService = {
       .returning('*')
       .then(([user]) => user);
   },
-
-  getProfile(db, id){
-    return db
-      .from('users')
-      .select('*')
-      .where({id});
-  },
 };
 module.exports = UsersService;
