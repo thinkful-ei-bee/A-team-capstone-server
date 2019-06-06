@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express');
 const BidsService = require('./bids-service.js');
+const ProjectsService = require('../projects/projects-service');
 const bidsRouter = express.Router();
 const jsonBodyParser = express.json();
 const {requireAuth} = require('../middleware/jwt-auth');
@@ -33,14 +34,30 @@ bidsRouter
       });
     }
 
-    BidsService.addBid(req.app.get('db'), {
-      user_id: newBid.user_id,
-      project_id: newBid.project_id,
-      bid: newBid.bid
-    })
-      .then(bid => {return res.status(201).json({
-        id: bid.id });})
-      .catch(next); 
+    ProjectsService.getAllProjects(req.app.get('db'))
+      .then((projectArr) => {
+        let projectIds = projectArr.map(project => project.id);
+        let userProjects = projectArr.filter(project => project.owner_id === newBid.user_id).map(project => project.id);
+
+        if (projectIds.indexOf(newBid.project_id) === -1) {
+          return res.status(400).json({
+            error: 'Project does not exist'
+          });
+        } else if (userProjects.indexOf(newBid.project_id) !== -1) {
+          return res.status(400).json({
+            error: 'Project belongs to current user'
+          });
+        } else {
+          BidsService.addBid(req.app.get('db'), {
+            user_id: newBid.user_id,
+            project_id: newBid.project_id,
+            bid: newBid.bid
+          })
+            .then(bid => {return res.status(201).json({
+              id: bid.id });})
+            .catch(next); 
+        }
+      });
   });
 
 bidsRouter
