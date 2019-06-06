@@ -10,9 +10,12 @@ const BidsService = {
   },
   getBidsByUser(db, user_id) {
     return db
-      .select('*')
+      .select('bids.id', 'project_id', 'bid', 'project_name', 'project_description', 'languages', 'requirements', 'deadline', 'openPositions')
       .from('bids')
-      .where ( {user_id} );
+      .join('projects', function() {
+        this.on('projects.id', '=', 'bids.project_id');
+      })
+      .where ('bids.user_id', user_id );
   },
   getBidsByProject(db, project_id) {
     return db
