@@ -32,7 +32,7 @@ bidsRouter
       });
     }
 
-    return BidsService.addBid(req.app.get('db'), {
+    BidsService.addBid(req.app.get('db'), {
       user_id: newBid.user_id,
       project_id: newBid.project_id,
       bid: newBid.bid
@@ -46,7 +46,9 @@ bidsRouter
   .route('/others')
   .get(requireAuth, jsonBodyParser, (req, res, next) => {
     const id = req.user.id;
-    return BidsService.getBidsForUserProjects(req.app.get('b'))
+    BidsService.getBidsForUserProjects(req.app.get('db'), id)
+      .then(bids => res.status(200).json(bids))
+      .catch(next);
   });
 
 module.exports = bidsRouter;
