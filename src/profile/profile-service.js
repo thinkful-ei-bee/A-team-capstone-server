@@ -4,7 +4,7 @@ const ProfileService={
   getProfile(db,id){
     return db
       .from('users')
-      .select('username','user_description','image')
+      .select('id','username','user_description','image')
       .where({id})
       .first();
   },
