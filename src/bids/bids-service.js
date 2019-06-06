@@ -19,6 +19,14 @@ const BidsService = {
       .select('*')
       .from('bids')
       .where( {project_id});
+  },
+  getBidsForUserProjects(db, user_id) {
+    return db
+      .select('bid.*') 
+      .from('bids')
+      .join('projects')
+      .on('bids.project_id', '=', 'project.id')
+      .where('owner_id', user_id);
   }
 };
 
