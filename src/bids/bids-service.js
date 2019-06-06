@@ -22,10 +22,11 @@ const BidsService = {
   },
   getBidsForUserProjects(db, user_id) {
     return db
-      .select('bid.*') 
+      .select('bids.*') 
       .from('bids')
-      .join('projects')
-      .on('bids.project_id', '=', 'project.id')
+      .join('projects', function() {
+        this.on('bids.project_id', '=', 'projects.id');
+      })
       .where('owner_id', user_id);
   }
 };

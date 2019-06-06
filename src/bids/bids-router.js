@@ -49,8 +49,9 @@ bidsRouter
   .get(jsonBodyParser, (req, res, next) => {
     const id = req.user.id;
     BidsService.getBidsForUserProjects(req.app.get('db'), id)
-      .then(bids => res.status(200).json(bids))
-      .catch(next);
+      .then(bids => res.status(200).end());// .json(bids))
+    //   .catch(next);
+    // res.status(200).end();
   });
 
 module.exports = bidsRouter;
