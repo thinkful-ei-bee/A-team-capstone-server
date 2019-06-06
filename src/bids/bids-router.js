@@ -7,7 +7,7 @@ const {requireAuth} = require('../middleware/jwt-auth');
 
 // get users bids
 bidsRouter
-  .route('/users/bids')
+  .route('/bids')
   .get(requireAuth, jsonBodyParser, (req,res,next)=>{
     const id = req.user.id;
     BidsService.getBidsByUser(req.app.get('db'),id)
