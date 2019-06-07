@@ -38,12 +38,16 @@ const CommentsService = {
       .from('projects')
       .where({owner_id})
       .then(arr => {
-        return arr.concat(db
+        return db
           .select('project_id as id')
           .from('usersProjectCollaboration')
           .where('collaborator_id', '=', owner_id)
-        );
-      });
+          .then(arr2 => {
+            const objArr = arr.concat(arr2);
+            const idArr = objArr.map(ele => ele.id);
+            return idArr;
+          });
+      });       
   }
 };
 

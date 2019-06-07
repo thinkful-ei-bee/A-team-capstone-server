@@ -1,73 +1,50 @@
 'use strict';
 const express = require('express');
 const CommentsService = require('./comments-service.js');
-const ProjectsService = require('../projects/projects-service');
 const CommentsRouter = express.Router();
 const jsonBodyParser = express.json();
 const {requireAuth} = require('../middleware/jwt-auth');
 
 // get comments on a project
-bidsRouter
-  .route('/')
+CommentsRouter
+  .route('/:project_id')
   .all(requireAuth)
   .get(jsonBodyParser, (req,res,next)=>{
     const id = req.user.id;
-    BidsService.getBidsByUser(req.app.get('db'),id)
-      .then(bids=>{
-        return res.json(bids);
+    const project_id = Number(req.params.project_id);
+    CommentsService.getProjectsOpenForComments(req.app.get('db'),id)
+      .then(projectIds => {
+        if (projectIds.indexOf(project_id) === -1) {
+          return res.status(400).json({error: 'Comments on this project not available to current user'});
+        }
+        CommentsService.getCommentsByProject(req.app.get('db'), project_id)
+          .then(comments => res.status(200).json(comments));
       })
       .catch(next);
   })
   .post(jsonBodyParser, (req, res, next) => {
-    const newBid = req.body;
-    newBid.user_id = req.user.id;
-
-    if (!newBid.bid) {
+    const newComment = req.body;
+    newComment.author_id = req.user.id;
+    newComment.project_id = Number(req.params.project_id);
+    
+    if (!newComment.content) {
       return res.status(400).json({
-        error: 'Bid content is required'
+        error: 'Comment content is required'
       });
     }
 
-    if (!newBid.project_id) {
-      return res.status(400).json({
-        error: 'Project id is required'
-      });
-    }
-
-    ProjectsService.getAllProjects(req.app.get('db'))
-      .then((projectArr) => {
-        let projectIds = projectArr.map(project => project.id);
-        let userProjects = projectArr.filter(project => project.owner_id === newBid.user_id).map(project => project.id);
-
-        if (projectIds.indexOf(newBid.project_id) === -1) {
-          return res.status(400).json({
-            error: 'Project does not exist'
-          });
-        } else if (userProjects.indexOf(newBid.project_id) !== -1) {
-          return res.status(400).json({
-            error: 'Project belongs to current user'
-          });
-        } else {
-          BidsService.addBid(req.app.get('db'), {
-            user_id: newBid.user_id,
-            project_id: newBid.project_id,
-            bid: newBid.bid
-          })
-            .then(bid => {return res.status(201).json({
-              id: bid.id });})
-            .catch(next); 
+    CommentsService.getProjectsOpenForComments(req.app.get('db'), newComment.author_id)
+      .then(projectIds => {
+        if (projectIds.indexOf(newComment.project_id) === -1) {
+          return res.status(400).json({error: 'Commenting on this project not available to current user'});
         }
+
+        CommentsService.addComment(req.app.get('db'), {
+          author_id: newComment.author_id,
+          project_id: newComment.project_id,
+          content: newComment.content
+        })
+          .then(comment => res.status(201).json(comment));
       });
   });
-
-bidsRouter
-  .route('/others')
-  .all(requireAuth)
-  .get(jsonBodyParser, (req, res, next) => {
-    const id = req.user.id;
-    BidsService.getBidsForUserProjects(req.app.get('db'), id)
-      .then(bids => res.status(200).json(bids))
-      .catch(next);
-  });
-
 module.exports = CommentsRouter;
