@@ -31,6 +31,11 @@ const BidsService = {
         this.on('bids.project_id', '=', 'projects.id');
       })
       .where('owner_id', user_id);
+  },
+  removeBid(db, id) {
+    return db('bids')
+      .where( { id } )
+      .del();
   }
 };
 
