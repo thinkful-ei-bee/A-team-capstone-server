@@ -70,4 +70,16 @@ bidsRouter
       .catch(next);
   });
 
+bidsRouter
+  .route('/others/:id')
+  .all(requireAuth)
+  .get(jsonBodyParser, (req, res, next) => {
+    const id = req.user.id;
+    BidsService.getBidsForUserProjects(req.app.get('db'), id)
+      .then(bids => {
+        const singleBid = bids.filter(ele => ele.project_id === Number(req.params.id));
+        return res.status(200).json(singleBid);})
+      .catch(next);
+  });
+
 module.exports = bidsRouter;
