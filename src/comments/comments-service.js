@@ -31,6 +31,19 @@ const CommentsService = {
         this.on('comments.project_id', '=', 'projects.id');
       })
       .where('owner_id', user_id);
+  },
+  getProjectsOpenForComments(db, owner_id) {
+    return db
+      .select('id')
+      .from('projects')
+      .where({owner_id})
+      .then(arr => {
+        return arr.concat(db
+          .select('project_id as id')
+          .from('usersProjectCollaboration')
+          .where('collaborator_id', '=', owner_id)
+        );
+      });
   }
 };
 
