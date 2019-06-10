@@ -25,10 +25,13 @@ const BidsService = {
   },
   getBidsForUserProjects(db, user_id) {
     return db
-      .select('bids.*') 
+      .select('bids.*', 'username', 'user_description', 'image') 
       .from('bids')
       .join('projects', function() {
         this.on('bids.project_id', '=', 'projects.id');
+      })
+      .join('users', function() {
+        this.on('bids.user_id', '=', 'users.id');
       })
       .where('owner_id', user_id);
   },
