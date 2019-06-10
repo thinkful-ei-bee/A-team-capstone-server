@@ -44,6 +44,16 @@ const BidsService = {
     return db('bids')
       .where( { id } )
       .first();
+  },
+  acceptBid(db, id) {
+    return db('bids')
+      .where( { id } )
+      .update({status: 'accepted'});
+  },
+  declineBid(db, id) {
+    return db('bids')
+      .where( { id } )
+      .update({status: 'declined'});
   }
 };
 
