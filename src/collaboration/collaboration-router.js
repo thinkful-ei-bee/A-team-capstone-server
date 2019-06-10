@@ -77,7 +77,9 @@ collaborationRouter
     const collaboration_id = req.params.id;
     return CollaborationService.getCollaborationById(req.app.get('db'), collaboration_id)
       .then((collaboration) => {
-
+        if (!collaboration) {
+          return res.status(400).json({error: 'Collaboration does not exist'});
+        }
         return ProjectsService.getAllProjects(req.app.get('db'))
           .then(list => {
             const singleProject = list.filter(ele => ele.id === collaboration.project_id);
