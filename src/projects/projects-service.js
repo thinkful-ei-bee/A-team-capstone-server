@@ -18,6 +18,11 @@ const ProjectsService = {
     return db
       .select('*')
       .from('projects');
+  },
+  deleteProject(db, id) {
+    return db('projects')
+      .where({ id } )
+      .del();
   }
 };
 
