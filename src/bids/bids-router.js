@@ -61,6 +61,31 @@ bidsRouter
   });
 
 bidsRouter
+  .route('/bid/:id')
+  .all(requireAuth)
+  .delete((req, res, next) => {
+    const user_id = req.user.id;
+    const bid_id = req.params.id;
+    return BidsService.getBidById(req.app.get('db'), bid_id)
+      .then((bid) => {
+
+        return ProjectsService.getAllProjects(req.app.get('db'))
+          .then(list => {
+            const singleProject = list.filter(ele => ele.id === bid.project_id);
+            const owner = singleProject[0].owner_id;
+
+            if (bid.user_id !== user_id && owner !== user_id) {
+              return res.status(400).json({error: 'Unauthorized request'});
+            }
+
+            return BidsService.removeBid(req.app.get('db') , bid_id)
+              .then(() => res.status(204).end());
+          });
+      })
+      .catch(next);
+  });
+  
+bidsRouter
   .route('/others')
   .all(requireAuth)
   .get(jsonBodyParser, (req, res, next) => {

@@ -45,6 +45,25 @@ projectsRouter
         return res.status(200).json(list);
       })
       .catch(next);
+  })
+  .delete(requireAuth, (req, res, next) => {
+    const user_id = req.user.id;
+    const project_id = Number(req.params.id);
+    let user_project = false;
+    ProjectsService.getProjectsFromId(req.app.get('db'), user_id)
+      .then(list => {
+        list.forEach(project => {
+          if (project_id === project.id) {
+            user_project = true;
+          }
+        });
+        if (!user_project) {
+          return res.status(400).json({error: 'Project does not exist or does not belong to current user'});
+        }
+        return ProjectsService.deleteProject(req.app.get('db'), project_id)
+          .then(() => res.status(204).end());
+      })
+      .catch(next);
   });
  
 module.exports = projectsRouter;

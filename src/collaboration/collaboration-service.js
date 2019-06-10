@@ -19,6 +19,18 @@ const CollaborationService = {
       .select('*')
       .from('usersProjectCollaboration')
       .where( {project_id});
+  },
+  deleteCollaboration(db, id) {
+    return db('usersProjectCollaboration')
+      .where( { id } )
+      .del();
+  },
+  getCollaborationById(db, id) {
+    return db
+      .select('*')
+      .from('usersProjectCollaboration')
+      .where( { id } )
+      .first();
   }
 };
 
