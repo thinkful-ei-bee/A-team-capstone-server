@@ -15,6 +15,7 @@ const profileRouter = require('./profile/profile-router.js');
 const bidsRouter = require('./bids/bids-router.js');
 const commentsRouter = require('./comments/comments-router');
 const projectRouter = require('./project/project-router');
+const collaborationRouter = require('./collaboration/collaboration-router');
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -27,6 +28,7 @@ app.use('/api/profile', profileRouter);
 app.use('/api/bids', bidsRouter);
 app.use('/api/comments', commentsRouter);
 app.use('/api/project', projectRouter);
+app.use('/api/collaboration', collaborationRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(error, req, res, next) {
