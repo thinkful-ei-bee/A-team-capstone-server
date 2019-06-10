@@ -1,0 +1,2 @@
+ALTER TABLE "bids"
+ADD COLUMN "status" TEXT
