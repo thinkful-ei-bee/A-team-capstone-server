@@ -39,6 +39,11 @@ const BidsService = {
     return db('bids')
       .where( { id } )
       .del();
+  },
+  getBidById(db, id) {
+    return db('bids')
+      .where( { id } )
+      .first();
   }
 };
 
