@@ -59,7 +59,7 @@ collaborationRouter
 
             CollaborationService.addCollaboration(req.app.get('db'), newCollaboration)
               .then(coll => {
-                BidsService.removeBid(bidId)
+                BidsService.removeBid(req.app.get('db'), bidId)
                   .then(() => res.status(201).json(coll));
               })
               .catch(next); 
