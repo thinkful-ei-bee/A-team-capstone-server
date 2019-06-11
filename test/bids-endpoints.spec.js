@@ -53,6 +53,26 @@ describe('Bids Endpoints', function() {
     });
   });
 
+  describe('GET /api/bids/others', () => {
+    it('responds with 200 and an array of the bids made by others on user projects', () => {
+      return supertest(app)
+        .get('/api/bids/others')
+        .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+        .expect(200, [
+          {
+            id: 1,
+            project_id: 3,
+            bid: 'x',
+            image: null,
+            status: 'open',
+            user_description: 'first test user',
+            user_id: 1,
+            username: 'testuser1'
+          }
+        ]);
+    });
+  });
+
   describe('POST /api/bids', () => {
     it('responds with 400 bad request if no project_id is specified', () => {
       return supertest(app)
