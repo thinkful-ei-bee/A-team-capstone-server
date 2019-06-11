@@ -106,6 +106,23 @@ bidsRouter
         const singleBid = bids.filter(ele => ele.project_id === Number(req.params.id));
         return res.status(200).json(singleBid);})
       .catch(next);
+  })
+  .patch(jsonBodyParser, (req, res, next) => {
+    const id = req.user.id;
+    return BidsService.getBidsForUserProjects(req.app.get('db'), id)
+      .then(bids => {
+        const singleBid = bids.filter(ele => ele.id === Number(req.params.id));
+        
+        if (!singleBid.length) {
+          return res.status(400).json({error: 'Bid does not exist or is not on user project'});
+        }
+
+        const newBid = singleBid[0];
+      
+        return BidsService.declineBid(req.app.get('db'), newBid.id)
+          .then (() => res.status(204).end());
+      })
+      .catch(next);
   });
 
 module.exports = bidsRouter;

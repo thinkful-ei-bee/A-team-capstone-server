@@ -54,6 +54,11 @@ const BidsService = {
     return db('bids')
       .where( { id } )
       .update({status: 'declined'});
+  },
+  updateStatus(db, id, newStatus) {
+    return db('bids')
+      .where( { id } )
+      .update({ status: newStatus });
   }
 };
 
