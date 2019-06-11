@@ -15,7 +15,7 @@ CommentsRouter
     CommentsService.getProjectsOpenForComments(req.app.get('db'),id)
       .then(projectIds => {
         if (projectIds.indexOf(project_id) === -1) {
-          return res.status(400).json({error: 'Comments on this project not available to current user'});
+          return res.status(401).json({error: 'Comments on this project not available to current user'});
         }
         CommentsService.getCommentsByProject(req.app.get('db'), project_id)
           .then(comments => res.status(200).json(comments));
@@ -36,7 +36,7 @@ CommentsRouter
     CommentsService.getProjectsOpenForComments(req.app.get('db'), newComment.author_id)
       .then(projectIds => {
         if (projectIds.indexOf(newComment.project_id) === -1) {
-          return res.status(400).json({error: 'Commenting on this project not available to current user'});
+          return res.status(401).json({error: 'Commenting on this project not available to current user'});
         }
 
         CommentsService.addComment(req.app.get('db'), {
@@ -45,6 +45,7 @@ CommentsRouter
           content: newComment.content
         })
           .then(comment => res.status(201).json(comment));
-      });
+      })
+      .catch(next);
   });
 module.exports = CommentsRouter;
