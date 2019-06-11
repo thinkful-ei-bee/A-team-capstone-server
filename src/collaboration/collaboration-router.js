@@ -95,6 +95,29 @@ collaborationRouter
       })
       .catch(next);
 
+  })
+  .get((req, res, next) => {
+    const user_id = req.user.id;
+    const project_id = req.params.id;
+    return ProjectsService.getAllProjects(req.app.get('db'))
+      .then(list => {
+        const singleProject = list.filter(ele => ele.id === Number(project_id));
+
+        if (!singleProject.length) {
+          return res.status(400).json({error: 'Project does not exist'});
+        }
+
+        const owner = singleProject[0].owner_id;
+
+        if (user_id !== owner) {
+          return res.status(401).json({error: 'Unauthorized request'});
+        }
+
+        return CollaborationService.getCollaborationsByProject(req.app.get('db'), project_id)
+          .then((collaborations) => res.status(200).json(collaborations));
+        
+      })
+      .catch(next);
   });
 
 module.exports = collaborationRouter;
