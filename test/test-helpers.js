@@ -19,6 +19,14 @@ function makeUsersArray() {
       password: 'password2',
       email: 'none@none.com',
       user_description: 'second test user'
+    },
+
+    {
+      id: 3,
+      username: 'testuser3',
+      password: 'password3',
+      email: 'none@noemail.com',
+      user_description: 'third test user'
     }
   ];
 }
@@ -48,6 +56,51 @@ function makeProjectsArray(users) {
       project_description: 'project for second user',
       created_at: '2019-05-04T17:28:37.615Z',
       updated_at: '2019-05-04T17:28:37.615Z'
+    },
+    {
+      id: 4,
+      owner_id: users[2].id,
+      project_name: 'Third user project',
+      project_description: 'Project for third user',
+      created_at:'2019-05-04T17:28:37.615Z',
+      updated_at: '2019-05-04T17:28:37.615Z'
+    }
+  ];
+}
+
+function makeBidsArray(users, projects) {
+  return [
+    {
+      id: 1,
+      user_id: users[0].id,
+      project_id: projects[2].id,
+      bid: 'x',
+      status: 'open'
+    },
+
+    {
+      id: 2,
+      user_id: users[2].id,
+      project_id: projects[1].id,
+      bid: 'x',
+      status: 'open'
+    },
+    {
+      id: 3,
+      user_id: users[1].id,
+      project_id: projects[3].id,
+      bid: 'x',
+      status: 'open'
+    }
+  ];
+}
+
+function makeCollaborationArray(users, projects) {
+  return [
+    {
+      project_id: projects[0].id,
+      collaborator_id: users[1].id,
+      position: 'x'
     }
   ];
 }
@@ -55,11 +108,13 @@ function makeProjectsArray(users) {
 function makeArrays() {
   const testUsers = makeUsersArray();
   const testProjects = makeProjectsArray(testUsers);
+  const testBids = makeBidsArray(testUsers, testProjects);
+  const testCollaboration = makeCollaborationArray(testUsers, testProjects);
 
-  return { testUsers, testProjects };
+  return { testUsers, testProjects, testBids, testCollaboration };
 }
 
-function seedUsers(db, users, projects) {
+function seedUsers(db, users, projects, bids, collaboration) {
   
   const preppedUsers = users.map(user => ({
     id: user.id,
@@ -81,7 +136,23 @@ function seedUsers(db, users, projects) {
               return db.raw(
                 'SELECT setval(\'projects_id_seq\', ?)',
                 [projects[projects.length - 1].id]
-              );
+              )
+                .then(() => {
+                  return db.into('bids').insert(bids)
+                    .then(() => {
+                      return db.raw(
+                        'SELECT setval(\'bids_id_seq\', ?)', [bids[bids.length - 1].id]
+                      )
+                        .then(() => {
+                          return db.into('usersProjectCollaboration').insert(collaboration)
+                            .then(() => {
+                              return; /* db.raw(
+                                'SELECT setval("usersProjectCollaboration_id_seq", ?)', [collaboration[collaboration.length - 1].id]
+                               ); */
+                            });
+                        });
+                    });
+                });
             });
         });
     });
@@ -97,7 +168,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET){
 
 function cleanTables(db) {
   return db.raw(
-    'TRUNCATE users, projects, bids RESTART IDENTITY CASCADE;'
+    'TRUNCATE users, projects, bids, "usersProjectCollaboration" RESTART IDENTITY CASCADE;'
   );
 }
 

@@ -86,7 +86,7 @@ collaborationRouter
             const owner = singleProject[0].owner_id;
 
             if (collaboration.collaborator_id !== user_id && owner !== user_id) {
-              return res.status(400).json({error: 'Unauthorized request'});
+              return res.status(401).json({error: 'Unauthorized request'});
             }
 
             return CollaborationService.deleteCollaboration(req.app.get('db') , collaboration_id)

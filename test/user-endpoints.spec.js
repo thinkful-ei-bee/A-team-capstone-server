@@ -7,7 +7,7 @@ const helpers = require('./test-helpers');
 describe('Users Endpoints', function() {
   let db;
 
-  const { testUsers, testProjects } = helpers.makeArrays();
+  const { testUsers, testProjects, testBids } = helpers.makeArrays();
   const alreadyTaken = testUsers[0];
 
   before('make knex instance', () => {
@@ -27,7 +27,7 @@ describe('Users Endpoints', function() {
   describe('POST /api/users', () => {
     context('User Validation', () => {
       beforeEach('insert users', () =>
-        helpers.seedUsers(db, testUsers, testProjects)
+        helpers.seedUsers(db, testUsers, testProjects, testBids)
       );
 
       const requiredFields = ['username', 'password', 'email', 'user_description'];
