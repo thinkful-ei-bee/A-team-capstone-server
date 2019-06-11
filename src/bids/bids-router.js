@@ -21,6 +21,7 @@ bidsRouter
   .post(jsonBodyParser, (req, res, next) => {
     const newBid = req.body;
     newBid.user_id = req.user.id;
+    newBid.status = 'open';
 
     if (!newBid.bid) {
       return res.status(400).json({
@@ -75,7 +76,7 @@ bidsRouter
             const owner = singleProject[0].owner_id;
 
             if (bid.user_id !== user_id && owner !== user_id) {
-              return res.status(400).json({error: 'Unauthorized request'});
+              return res.status(401).json({error: 'Unauthorized request'});
             }
 
             return BidsService.removeBid(req.app.get('db') , bid_id)

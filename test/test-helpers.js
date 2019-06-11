@@ -168,7 +168,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET){
 
 function cleanTables(db) {
   return db.raw(
-    'TRUNCATE users, projects, bids, "usersProjectCollaboration" RESTART IDENTITY CASCADE;'
+    'TRUNCATE users, projects, bids, "usersProjectCollaboration", comments RESTART IDENTITY CASCADE;'
   );
 }
 
