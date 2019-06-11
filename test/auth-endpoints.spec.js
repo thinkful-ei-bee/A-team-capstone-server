@@ -8,7 +8,7 @@ const helpers = require('./test-helpers');
 describe('Auth Endpoints', function() {
   let db;
 
-  const { testUsers, testProjects } = helpers.makeArrays();
+  const { testUsers, testProjects, testBids, testCollaboration } = helpers.makeArrays();
   const testUser = testUsers[0];
 
   before('make knex instance', () => {
@@ -27,7 +27,7 @@ describe('Auth Endpoints', function() {
 
   describe('POST /api/auth/login', () => {
     beforeEach('insert users', () => {
-      return helpers.seedUsers(db, testUsers, testProjects);
+      return helpers.seedUsers(db, testUsers, testProjects, testBids, testCollaboration);
     });
     
     const requiredFields = ['username', 'password'];
