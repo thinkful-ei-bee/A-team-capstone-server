@@ -16,8 +16,14 @@ const CollaborationService = {
   },
   getCollaborationsByProject(db, project_id) {
     return db
-      .select('*')
+      .select('usersProjectCollaboration.id', 'project_id', 'collaborator_id', 'position', 'username', 'user_description', 'image')
       .from('usersProjectCollaboration')
+      .join('projects', function() {
+        this.on('usersProjectCollaboration.project_id', '=', 'projects.id'); 
+      })
+      .join('users', function() {
+        this.on('users.id', '=', 'collaborator_id');
+      })
       .where( {project_id});
   },
   deleteCollaboration(db, id) {
