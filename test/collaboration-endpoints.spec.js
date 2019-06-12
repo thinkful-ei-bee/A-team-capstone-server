@@ -43,7 +43,8 @@ describe('Collaboration Endpoints', function() {
             collaborator_id: 2,
             id: 1,
             position: 'x',
-            project_id: 1
+            project_id: 1,
+            project_name: 'the first project'
           }
         ]);
     });
