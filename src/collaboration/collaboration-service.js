@@ -22,7 +22,7 @@ const CollaborationService = {
         this.on('usersProjectCollaboration.project_id', '=', 'projects.id'); 
       })
       .join('users', function() {
-        this.on('projects.owner_id', '=', 'users.id');
+        this.on('users.id', '=', 'collaborator_id');
       })
       .where( {project_id});
   },
