@@ -23,6 +23,11 @@ const ProjectsService = {
     return db('projects')
       .where({ id } )
       .del();
+  },
+  updateProject(db, id, updates) {
+    return db('projects')
+      .where( { id } )
+      .update(updates);
   }
 };
 
