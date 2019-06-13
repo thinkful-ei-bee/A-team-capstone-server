@@ -47,7 +47,8 @@ describe('Bids Endpoints', function() {
             languages: null,
             requirements: null,
             deadline: null,
-            openPositions: null
+            openPositions: null,
+            status: 'open'
           }
         ]);
     });
