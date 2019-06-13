@@ -10,7 +10,7 @@ const BidsService = {
   },
   getBidsByUser(db, user_id) {
     return db
-      .select('bids.id', 'project_id', 'bid', 'project_name', 'project_description', 'languages', 'requirements', 'deadline', 'openPositions')
+      .select('bids.id', 'project_id', 'bid', 'project_name', 'project_description', 'languages', 'requirements', 'deadline', 'openPositions', 'status')
       .from('bids')
       .join('projects', function() {
         this.on('projects.id', '=', 'bids.project_id');
