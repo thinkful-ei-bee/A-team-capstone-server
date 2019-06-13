@@ -19,8 +19,11 @@ const CommentsService = {
   },
   getCommentsByProject(db, project_id) {
     return db
-      .select('*')
+      .select('comments.*', 'username')
       .from('comments')
+      .join('users', function() {
+        this.on('comments.author_id', '=', 'users.id');
+      })
       .where( {project_id});
   },
   getCommentsForUserProjects(db, user_id) {
