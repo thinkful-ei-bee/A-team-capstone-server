@@ -4,6 +4,7 @@ const CommentsService = require('./comments-service.js');
 const CommentsRouter = express.Router();
 const jsonBodyParser = express.json();
 const {requireAuth} = require('../middleware/jwt-auth');
+const clients = require('../clients');
 
 // get comments on a project
 CommentsRouter
@@ -44,7 +45,12 @@ CommentsRouter
           project_id: newComment.project_id,
           content: newComment.content
         })
-          .then(comment => res.status(201).json(comment));
+          .then(comment => {
+            clients.clientList.forEach(client => {
+              client.connection.send(newComment.project_id);
+            });
+            return res.status(201).json(comment);
+          });
       })
       .catch(next);
   });
