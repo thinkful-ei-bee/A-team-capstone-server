@@ -18,7 +18,15 @@ const clients = {
       connection: ws
     };
 
+    const temp = [];
+
     this.clientList.push(client);
+    this.clientList.forEach(client => {
+      if (client.connection.readyState !== 3) {
+        temp.push(client);
+      }
+    });
+    this.clientList = temp;
   }
 };
 

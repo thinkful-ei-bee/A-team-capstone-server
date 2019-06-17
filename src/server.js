@@ -10,18 +10,6 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws, req) => {
   clients.addClient(ws, req);
-
-  ws.on('message', message => {
-    console.log('received: %s', message);
-    ws.send(`Hello, you sent -> ${message}`);
-    clients.clientList.forEach(ele => console.log(ele.username));
-  });
-
-  ws.send('Hi there, I am a WebSocket server');
-
-  ws.on('close', () => {
-    console.log('closed connection');
-  });
 });
 
 const db = knex({
