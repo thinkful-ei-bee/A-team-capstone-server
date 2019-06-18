@@ -1,4 +1,5 @@
 'use strict';
+const xss = require('xss');
 
 const ProjectsService = {
   addProject(db, newProject) {
@@ -28,6 +29,23 @@ const ProjectsService = {
     return db('projects')
       .where( { id } )
       .update(updates);
+  },
+  serializeProjects(projects) {
+    return projects.map(project => this.serializeProject(project));
+  },
+  serializeProject(project) {
+    return {
+      id: project.id,
+      owner_id: project.owner_id,
+      project_name: xss(project.project_name),
+      created_at: project.created_at,
+      project_description: xss(project.project_description),
+      languages: xss(project.languages),
+      requirements: xss(project.requirements),
+      deadline: project.deadline,
+      openPositions: project.openPositions,
+      openForBids: project.openForBids
+    };
   }
 };
 

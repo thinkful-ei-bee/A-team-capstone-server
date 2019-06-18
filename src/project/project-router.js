@@ -12,7 +12,7 @@ projectRouter
     ProjectsService.getAllProjects(req.app.get('db'))
       .then(list => {
         const singleProject = list.filter(ele => ele.id === Number(req.params.id));
-        return res.status(200).json(singleProject);
+        return res.status(200).json(ProjectsService.serializeProjects(singleProject));
       })
       .catch(next);
   })

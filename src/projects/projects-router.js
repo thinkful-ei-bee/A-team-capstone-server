@@ -32,7 +32,7 @@ projectsRouter
   .get((req, res, next) => {
     ProjectsService.getAllProjects(req.app.get('db'))
       .then(list => {
-        return res.status(200).json(list);
+        return res.status(200).json(ProjectsService.serializeProjects(list));
       })
       .catch(next);
   });
@@ -42,7 +42,7 @@ projectsRouter
   .get((req, res, next) => {
     ProjectsService.getProjectsFromId(req.app.get('db'), req.params.id)
       .then(list => {
-        return res.status(200).json(list);
+        return res.status(200).json(ProjectsService.serializeProjects(list));
       })
       .catch(next);
   })

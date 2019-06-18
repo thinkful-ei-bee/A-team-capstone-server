@@ -19,7 +19,7 @@ CommentsRouter
           return res.status(401).json({error: 'Comments on this project not available to current user'});
         }
         CommentsService.getCommentsByProject(req.app.get('db'), project_id)
-          .then(comments => res.status(200).json(comments));
+          .then(comments => res.status(200).json(CommentsService.serializeComments(comments)));
       })
       .catch(next);
   })
@@ -49,7 +49,7 @@ CommentsRouter
             clients.clientList.forEach(client => {
               client.connection.send(newComment.project_id);
             });
-            return res.status(201).json(comment);
+            return res.status(201).json(CommentsService.serializeComment(comment));
           });
       })
       .catch(next);

@@ -3,7 +3,7 @@ const express = require('express');
 const UsersService = require('./users-service');
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
-const {requireAuth} = require('../middleware/jwt-auth');
+const xss = require('xss');
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
@@ -52,7 +52,7 @@ usersRouter
                 return UsersService.addUser(req.app.get('db'), newUser)
                   .then((user) => {
                     return res.status(201).json({
-                      username: username,
+                      username: xss(username),
                       id: user.id
                     });
                   });

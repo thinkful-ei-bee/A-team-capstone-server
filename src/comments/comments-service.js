@@ -1,4 +1,5 @@
 'use strict';
+const xss = require('xss');
 
 const CommentsService = {
   addComment(db, newComment) {
@@ -51,6 +52,18 @@ const CommentsService = {
             return idArr;
           });
       });       
+  },
+  serializeComments(comments) {
+    return comments.map(comment => this.serializeComment(comment));
+  },
+  serializeComment(comment) {
+    return {
+      id: comment.id,
+      author_id: comment.author_id,
+      project_id: comment.project_id,
+      date_created: comment.date_created,
+      content: xss(comment.content)
+    };
   }
 };
 
