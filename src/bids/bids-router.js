@@ -14,7 +14,7 @@ bidsRouter
     const id = req.user.id;
     BidsService.getBidsByUser(req.app.get('db'),id)
       .then(bids=>{
-        return res.json(bids);
+        return res.json(BidsService.serBidsByUser(bids));
       })
       .catch(next);
   })
@@ -92,7 +92,7 @@ bidsRouter
   .get(jsonBodyParser, (req, res, next) => {
     const id = req.user.id;
     BidsService.getBidsForUserProjects(req.app.get('db'), id)
-      .then(bids => res.status(200).json(bids))
+      .then(bids => res.status(200).json(BidsService.serBidsForUserProjects(bids)))
       .catch(next);
   });
 
@@ -104,7 +104,8 @@ bidsRouter
     BidsService.getBidsForUserProjects(req.app.get('db'), id)
       .then(bids => {
         const singleBid = bids.filter(ele => ele.project_id === Number(req.params.id));
-        return res.status(200).json(singleBid);})
+        return res.status(200).json(BidsService.serBidsForUserProjects(singleBid));
+      })
       .catch(next);
   })
   .patch(jsonBodyParser, (req, res, next) => {

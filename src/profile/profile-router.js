@@ -12,7 +12,7 @@ profileRouter
     const id = req.user.id;
     ProfileService.getProfile(req.app.get('db'),id)
       .then(profile=>{
-        return res.json(profile);
+        return res.json(ProfileService.serializeProfile(profile));
       })
       .catch(next);
   });

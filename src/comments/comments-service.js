@@ -54,7 +54,7 @@ const CommentsService = {
       });       
   },
   serializeComments(comments) {
-    return comments.map(comment => this.serializeComments(comment));
+    return comments.map(comment => this.serializeComment(comment));
   },
   serializeComment(comment) {
     return {

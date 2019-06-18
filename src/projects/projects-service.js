@@ -31,7 +31,7 @@ const ProjectsService = {
       .update(updates);
   },
   serializeProjects(projects) {
-    return projects.map(project => this.serializeProjects(project));
+    return projects.map(project => this.serializeProject(project));
   },
   serializeProject(project) {
     return {

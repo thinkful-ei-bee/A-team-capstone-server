@@ -114,7 +114,7 @@ collaborationRouter
         }
 
         return CollaborationService.getCollaborationsByProject(req.app.get('db'), project_id)
-          .then((collaborations) => res.status(200).json(collaborations));
+          .then((collaborations) => res.status(200).json(CollaborationService.serCollsByProject(collaborations)));
         
       })
       .catch(next);
