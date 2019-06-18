@@ -62,7 +62,8 @@ const CommentsService = {
       author_id: comment.author_id,
       project_id: comment.project_id,
       date_created: comment.date_created,
-      content: xss(comment.content)
+      content: xss(comment.content),
+      username: xss(comment.username)
     };
   }
 };
