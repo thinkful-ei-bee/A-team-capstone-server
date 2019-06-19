@@ -15,7 +15,7 @@ collaborationRouter
 
     CollaborationService.getCollaborationsByUser(req.app.get('db'), id)
       .then(coll => {
-        return res.json(coll);
+        return res.json(CollaborationService.serCollsByUser(coll));
       })
       .catch(next);
   })
