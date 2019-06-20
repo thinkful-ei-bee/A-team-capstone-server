@@ -1,2 +1,2 @@
 ALTER TABLE "projects"
-DROP COLUMN "openForBids" BOOLEAN
+DROP COLUMN "openForBids"
