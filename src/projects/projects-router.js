@@ -28,6 +28,10 @@ projectsRouter
       newProject.deadline = null;
     }
 
+    if (!newProject.openPositions || newProject.openPositions < 0 || newProject.openPositions > 100 || !Number.isInteger(Number(newProject.openPositions))) {
+      return res.status(400).json({error: 'Open positions should be an integer between 0 and 100'});
+    }
+
     return ProjectsService.addProject(req.app.get('db'), newProject)
       .then(project => {return res.status(201).json({
         id: project.id });})
