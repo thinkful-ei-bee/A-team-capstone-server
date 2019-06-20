@@ -28,7 +28,7 @@ Creates a new user. This route takes a body with the following fields:
 
 password: (string, required). Must contain both letters and numbers.
 username: (string, required). New username.
-image: (string, optional). Url for user avatar.
+image: (string, optional). Url for user avatar; not implemented in current client.
 email: (string, required). User's email address.
 user_decription: (string, required). User's self description.
 
@@ -63,7 +63,7 @@ Returns the following profile fields for the current user:
 id (integer)
 username (string)
 user_description (string)
-image (string, url for avatar)
+image (string, url for avatar; not implemented in current client)
 
 ### GET /api/bids
 
