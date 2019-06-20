@@ -24,6 +24,10 @@ projectsRouter
       });
     }
 
+    if (!newProject.deadline) {
+      newProject.deadline = null;
+    }
+
     return ProjectsService.addProject(req.app.get('db'), newProject)
       .then(project => {return res.status(201).json({
         id: project.id });})
